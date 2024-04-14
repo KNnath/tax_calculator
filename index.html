@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .wap {
+            border: 1px solid black;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+            width: 400px;
+            padding-top: 70px;
+        }
+
+        .input-row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .input-row label {
+            margin-right: 10px;
+        }
+
+        input {
+            padding: 8px;
+            width: 95%;
+            border-radius: 5px;
+            border: 1px solid black;
+            margin-right: -15px;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid black;
+            margin-right: -100px;
+        }
+
+        label {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        button {
+            width: 100%;
+            padding: 9px;
+            border-radius: 5px;
+            border: 1px solid black;
+            margin-top: 40px;
+            background-color: rgb(83, 33, 199);
+            color: white;
+            font-weight: 600;
+        }
+        button:hover{
+            background-color: rgb(3, 3, 71);
+        }
+
+        #exclamation {
+            position: relative;
+            top: 0px;
+            left: -7px;
+            color: #000000;
+            background-color: white;
+            display: none;
+        }
+
+        #exclamation-age {
+            position: relative;
+            top: 0px;
+            left: 60px;
+            color: #000000;
+            background-color: white;
+            display: none;
+        }
+
+        #exclamation.red {
+            color: red;
+        }
+
+        #exclamation-age.red {
+            color: red;
+        }
+
+        #exclamation.red::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px;
+            border-radius: 3px;
+            white-space: nowrap;
+            z-index: 1;
+            display: none;
+        }
+
+        #exclamation-age.red::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 0, 0, 0.8);
+            color: white;
+            padding: 5px;
+            border-radius: 3px;
+            white-space: nowrap;
+            z-index: 1;
+            display: none;
+        }
+
+        #exclamation-age.red:hover::after {
+            display: block;
+        }
+
+        #exclamation.red:hover::after {
+            display: block;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: black;
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 3px;
+            position: absolute;
+            z-index: 1;
+            bottom: calc(100% + 5px);
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            border-width: 5px;
+            border-style: solid;
+            border-color: black transparent transparent transparent;
+            transform: translateX(-50%);
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .result-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            display: none;
+            position: absolute;
+            border: 1px solid black;
+            background-color: white;
+            width: 40%;
+            height: 40%;
+        }
+
+        #result-in {
+            width: 50%;
+            border: none;
+            background-color: rgb(255, 255, 255);
+            text-align: center;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: 700;
+            color: #000000;
+        }
+
+        #result-lebel {
+            padding: 10px;
+            font-size: 25px;
+            margin-top: 20px;
+        }
+
+        h4 {
+            margin: 5px;
+        }
+
+        #close {
+            width: 15%;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="#">
+        <div class="wap">
+            <div class="input-row">
+                <label for="income">Enter gross annual income </label>
+                <div class="tooltip">
+                    <i class="fa fa-question-circle" style="font-size:20px"></i>
+                    <span class="tooltiptext">Gross annual income is your total salary is a year before any
+                        deduction</span>
+                </div>
+                <!-- <i id="q" class="fa fa-question-circle" style="font-size:20px" data-tooltip="Gross annual"></i> -->
+            </div>
+
+            <div class="input-row">
+                <input type="text" id="income" placeholder="Enter gross annual income">
+                <i id="exclamation" class="fa fa-exclamation-circle" style="font-size:18px"
+                    data-tooltip="Please enter numbers only"></i>
+            </div>
+
+            <div class="input-row">
+                <label for="income">Enter extra income</label>
+                <div class="tooltip">
+                    <i class="fa fa-question-circle" style="font-size:20px"></i>
+                    <span class="tooltiptext">Extra income is your income from the other source</span>
+                </div>
+                <!-- <i id="q" class="fa fa-question-circle" style="font-size:20px" data-tooltip="Gross annual"></i> -->
+            </div>
+
+            <div class="input-row">
+                <input type="text" id="extra-income" placeholder="Enter extra income from other source">
+                <i id="exclamation" class="fa fa-exclamation-circle" style="font-size:18px"
+                    data-tooltip="Please enter numbers only"></i>
+            </div>
+
+            <div class="input-row">
+                <label for="age">Enter age group</label>
+                <div class="tooltip">
+                    <i class="fa fa-question-circle" style="font-size:20px"></i>
+                    <span class="tooltiptext">Select age group from the given Range</span>
+                </div>
+                <!-- <i id="q" class="fa fa-question-circle" style="font-size:20px" data-tooltip="Gross annual"></i> -->
+            </div>
+            <div class="input-row">
+                <select id="age">
+                    <option></option>
+                    <option>&#60; 40</option>
+                    <option>&#8805; 40 &amp; &#60; 60</option>
+                    <option>&#8805; 60</option>
+                </select>
+                <i id="exclamation-age" class="fa fa-exclamation-triangle" style="font-size:18px"
+                    data-tooltip="Select the age Group"></i>
+            </div>
+            <div class="input-row">
+                <label for="deduction">Enter total applicable deduction</label>
+                <div class="tooltip">
+                    <i class="fa fa-question-circle" style="font-size:20px"></i>
+                    <span class="tooltiptext">Total applicable deduction refers to allowable reductions in
+                        income.</span>
+                </div>
+                <!-- <i id="q" class="fa fa-question-circle" style="font-size:20px" data-tooltip="Gross annual"></i> -->
+            </div>
+            <div class="input-row">
+                <input type="text" id="deduction" placeholder="Add total applicable deduction">
+                <i id="exclamation" class="fa fa-exclamation-circle" style="font-size:18px"
+                    data-tooltip="Please enter numbers only"></i>
+            </div>
+            <div class="input-row">
+                <button type="submit" id="submit">Submit</button>
+            </div>
+        </div>
+    </form>
+    <div class="result-box">
+        <label for="result" id="result-lebel">Your overall Income will be</label>
+        <input type="text" id="result-in" readonly disabled>
+        <!-- <label for="result" id="result-lebel">after tax deductions</label> -->
+        <h4>after tax deductions</h4>
+        <button type="close" id="close">Close</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="script.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+
+            // Function to display result in popup
+            function displayResult(result) {
+                $('#result-in').val(result.toFixed(2));
+                $('.result-box').show(); // Show the result box
+            }
+
+            // Attach click event handler to the submit button
+            $('button[type="submit"]').on('click', function (e) {
+                e.preventDefault(); // Prevent form submission for demonstration purpose
+
+                // Get input values
+                var income = $('#income').val();
+                var extraIncome = $('#extra-income').val();
+                var ageGroup = $('#age').val();
+                var deduction = $('#deduction').val();
+
+                        // Check if age group is selected
+        if (ageGroup === '') {
+            // Show the red exclamation icon for age
+            $('#exclamation-age').addClass('red').show();
+            showTooltip($('#exclamation-age'), 'Please select an age group');
+            return; // Exit the function if age group is not selected
+        }
+
+                // Calculate tax
+                var tax = calculateTax(income, extraIncome, ageGroup, deduction);
+
+                // Display result in popup
+                displayResult(tax);
+            });
+
+            // Select the input fields
+            var $inputs = $('input[type="text"]');
+            var $select = $('#age');
+
+            // Function to handle tooltip display
+            function showTooltip(element, tooltipText) {
+                element.attr('data-tooltip', tooltipText);
+                element.next('.tooltip').show();
+            }
+
+            // Function to hide tooltip
+            function hideTooltip(element) {
+                element.removeAttr('data-tooltip');
+                element.next('.tooltip').hide();
+            }
+
+            // Attach keyup event handler to the input fields
+            $inputs.on('keyup', function () {
+                // Check if the input field contains only numbers
+                if ($.isNumeric($(this).val().trim())) {
+                    // Hide the red exclamation icon
+                    $(this).next('i.fa-exclamation-circle').removeClass('red').hide();
+                } else {
+                    // Show the red exclamation icon and set tooltip message
+                    $(this).next('i.fa-exclamation-circle').addClass('red').show();
+                    showTooltip($(this).next('i.fa-exclamation-circle'), 'Please enter numbers only');
+                }
+            });
+
+            // Attach change event handler to the age select
+            $select.on('change', function () {
+                // Hide the red exclamation icon for age when an option is selected
+                $('#exclamation-age').removeClass('red').hide();
+            });
+
+            // Attach hover event handler to the red exclamation icon for age
+            $('#exclamation-age.red').hover(function () {
+                // Show tooltip when hovered
+                showTooltip($(this), 'Please select an age group');
+            }, function () {
+                // Remove tooltip when not hovered
+                hideTooltip($(this));
+            });
+
+            // Attach click event handler to the submit button
+            // $('button[type="submit"]').on('click', function (e) {
+            //     console.log("Button Click")
+            //     e.preventDefault(); // Prevent form submission for demonstration purpose
+
+            //     // Check if age is selected
+            //     if ($select.val() === '') {
+            //         // Show the red exclamation icon for age
+            //         $('#exclamation-age').addClass('red').show();
+            //         showTooltip($('#exclamation-age'), 'Please select an age group');
+            //         return;
+            //     } else {
+            //         // Hide the red exclamation icon for age
+            //         $('#exclamation-age').removeClass('red').hide();
+            //         hideTooltip($('#exclamation-age'));
+            //         // Proceed with form submission or other actions
+            //         // For demonstration, you can uncomment below line to allow form submission
+            //         // $('form').submit();
+            //     }
+            // });
+        });
+    </script>
+</body>
+
+</html>
